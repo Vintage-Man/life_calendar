@@ -29,8 +29,8 @@
       }
 
       #boxes-container {
-        width: 600px;
         display: grid;
+        margin: auto;
         grid-template-columns: 
         1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr
         1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr
@@ -38,14 +38,22 @@
         1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr
         1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr
         1fr 1fr;
-        margin: auto;
       }
 
       .box {
-        height: 5px;
+        width: 6.3px;
+        height: 6.3px;
         margin: 2px;
         border: 1px solid white;
         box-shadow: 1px 0 100px white;
+      }
+
+
+      @media screen and (min-width: 990px) {
+        .box {
+          width: 5px;
+          height: 5px;
+        }
       }
 
       .currWeekBox {
@@ -60,12 +68,6 @@
         100% {opacity: 100%;}
       }
 
-      .App {
-        height: fit-content;
-        margin-top: 120px;
-        margin-bottom: 120px;
-      }
-
       #update-time{
         color: rgb(42, 42, 42);
       }
@@ -74,15 +76,11 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id='root'>
-      <div className='App'>
         <h1 id='life'>LIFE</h1>
         <div id='boxes-container'>
 
         </div>
         <p id='update-time'></p>
-      </div>
-    </div>
   </body>
 </html>
 <script>
