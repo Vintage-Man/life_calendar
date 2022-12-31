@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      html {
+        background-color: black;
+        text-align: center;
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #life {
+        color: white;
+        font-size: 70px;
+        font-family: 'Augustus';
+        text-shadow: 0 0 57px white;
+      }
+
+      #boxes-container {
+        width: 600px;
+        display: grid;
+        grid-template-columns: 
+        1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr
+        1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr
+        1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr
+        1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr
+        1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr
+        1fr 1fr;
+        margin: auto;
+      }
+
+      .box {
+        height: 5px;
+        margin: 2px;
+        border: 1px solid white;
+        box-shadow: 1px 0 100px white;
+      }
+
+      .currWeekBox {
+        animation-name: fading;
+        animation-duration: 8s;
+        animation-iteration-count: infinite;
+      }
+
+      @keyframes fading {
+        0% {opacity: 100%;}
+        50% {opacity: 45%;}
+        100% {opacity: 100%;}
+      }
+
+      .App {
+        height: fit-content;
+        margin-top: 120px;
+        margin-bottom: 120px;
+      }
+
+      #update-time{
+        color: rgb(42, 42, 42);
+      }
+    </style>
+    <title>Life Calendar</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id='root'>
+      <div className='App'>
+        <h1 id='life'>LIFE</h1>
+        <div id='boxes-container'>
+
+        </div>
+        <p id='update-time'></p>
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  const state = {
+    birthDay: 6,
+    birthMonth: 6,
+    birthYear: 2000,
+  };
+
+  const birth = new Date(state.birthYear + "-" + 
+    state.birthMonth + "-" + state.birthDay);
+
+  function handleUpdate() {
+    let x = 1;
+    let curr = new Date();
+    let diffTime = curr.getTime() - birth.getTime();
+    let weeks = diffTime / (1000 * 60 * 60 * 24 * 7);
+    let daysTill = 
+    Math.round((weeks - parseInt(weeks)) * 7 * 1000) / 1000;
+    console.log("days until next week: " + daysTill);
+
+    const boxesContainer = document.getElementById("boxes-container");
+    const updateTime = document.getElementById('update-time');
+
+    boxesContainer.innerHTML = "";
+
+    for(var i = 0; i < 90; i++) {
+      for(var j = 0; j < 52; j++) {
+        let box = document.createElement('div');
+        box.className = "box";
+        box.id = x;
+
+        if(weeks < x){
+          box.style.background = 'black';
+        }
+        else if(parseInt(weeks) == x) {
+          box.style.background = 
+          `linear-gradient(
+            to right, 
+            white ${(daysTill * 1.4285714) * 10}%, 
+            black 0%)
+          `;
+          box.className = "currWeekBox box"
+          console.log(
+            'precent through the week: ' + (daysTill * 1.4285714) * 10 + '%'
+          );
+        }
+        else {
+          box.style.background = 'white';
+        }
+
+        boxesContainer.appendChild(box);
+        x++;
+      }
+    }
+    updateTime.textContent = 
+    `${addingZeros(curr.getHours())}:${addingZeros(curr.getMinutes())} ` + 
+    `${curr.getMonth() + 1}/${curr.getDate()}/${curr.getFullYear()}`;
+  }
+  
+  function addingZeros(num){
+    return num < 10 ? "0" + num : num;
+  }
+
+  handleUpdate();
+  setInterval(handleUpdate, 1000 * 60);
+</script>
